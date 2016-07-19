@@ -122,6 +122,18 @@ class OEXRearTableViewController : UITableViewController {
         userProfilePicture.accessibilityLabel = Strings.accessibilityUserAvatar
     }
     
+    private func showLogoutWarningAlert() {
+        let completionHandler: ((UIAlertAction!) -> Void)! = {[weak self] action in
+            self?.environment.router?.logout()
+            OEXFileUtility.nukeUserData()
+        }
+        
+        let alert = UIAlertController(title: Strings.logout, message: Strings.logoutWarningMessage, preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: Strings.cancel, style: UIAlertActionStyle.Cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: Strings.logout, style: UIAlertActionStyle.Destructive, handler: completionHandler))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return OEXStyles.sharedStyles().standardStatusBarStyle()
     }
@@ -177,7 +189,7 @@ class OEXRearTableViewController : UITableViewController {
     }
     
     @IBAction func logoutClicked(sender: UIButton) {
-        environment.router?.logout()
+        showLogoutWarningAlert()
     }
     
     func dataAvailable(notification: NSNotification) {
