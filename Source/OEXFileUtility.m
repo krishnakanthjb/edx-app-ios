@@ -208,7 +208,7 @@
 
 + (BOOL) canDeleteFile:(NSString *) file {
     NSString *fileExtension = [[file pathExtension] lowercaseString];
-    if ([fileExtension isEqualToString:@"mp4"] || ([fileExtension rangeOfString:@"sqlite"].location != NSNotFound)) {
+    if ([fileExtension isEqualToString:@"mp4"] || [fileExtension containsString:@"sqlite"]) {
         return NO;
     }
     
