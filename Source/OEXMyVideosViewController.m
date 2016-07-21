@@ -100,7 +100,6 @@ typedef  enum OEXAlertType
 @property   (weak, nonatomic) IBOutlet UIView* videoVideo;
 @property(nonatomic, strong) IBOutlet NSLayoutConstraint* recentEditViewHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint* TrailingSpaceCustomProgress;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint* TrailingSpaceOffline;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint* ConstraintRecentTop;
 @property (weak, nonatomic) IBOutlet UIView* view_NavBG;
 
@@ -169,14 +168,8 @@ typedef  enum OEXAlertType
     // To avoid this check this.
     if(_isTableEditing) {
         self.TrailingSpaceCustomProgress.constant = ORIGINAL_RIGHT_SPACE_PROGRESSBAR + SHIFT_LEFT;
-        self.TrailingSpaceOffline.constant = ORIGINAL_RIGHT_SPACE_OFFLINE + MOVE_OFFLINE_X;
-        self.lbl_NavTitle.textAlignment = NSTextAlignmentLeft;
     }
     else {
-        self.TrailingSpaceOffline.constant = ORIGINAL_RIGHT_SPACE_OFFLINE;
-
-        self.lbl_NavTitle.textAlignment = NSTextAlignmentCenter;
-
         if(self.videoViewHeight.constant == 225) {
             [self.recentEditViewHeight setConstant:0.0f];
         }
@@ -634,8 +627,6 @@ typedef  enum OEXAlertType
 
     // SHIFT THE PROGRESS TO LEFT
     self.TrailingSpaceCustomProgress.constant = ORIGINAL_RIGHT_SPACE_PROGRESSBAR;
-    self.TrailingSpaceOffline.constant = ORIGINAL_RIGHT_SPACE_OFFLINE;
-    self.lbl_NavTitle.textAlignment = NSTextAlignmentCenter;
 
     [self hideComponentsOnEditing:NO];
     [self.table_RecentVideos reloadData];
@@ -665,12 +656,6 @@ typedef  enum OEXAlertType
 
     // SHIFT THE PROGRESS TO LEFT
     self.TrailingSpaceCustomProgress.constant = ORIGINAL_RIGHT_SPACE_PROGRESSBAR + SHIFT_LEFT;
-
-    self.TrailingSpaceOffline.constant = ORIGINAL_RIGHT_SPACE_OFFLINE + MOVE_OFFLINE_X;
-
-    if(!_dataInterface.reachable) {
-        self.lbl_NavTitle.textAlignment = NSTextAlignmentLeft;
-    }
 
     [self hideComponentsOnEditing:YES];
 
@@ -886,7 +871,6 @@ typedef  enum OEXAlertType
             self.customEditing.hidden = YES;
             self.btn_SelectAllEditing.hidden = YES;
             self.TrailingSpaceCustomProgress.constant = ORIGINAL_RIGHT_SPACE_PROGRESSBAR;
-            self.TrailingSpaceOffline.constant = ORIGINAL_RIGHT_SPACE_OFFLINE;
             [self cancelTableClicked:nil];
 
             //Analytics Screen record
@@ -908,13 +892,8 @@ typedef  enum OEXAlertType
             if(self.isTableEditing) {
                 self.btn_SelectAllEditing.hidden = NO;
                 self.TrailingSpaceCustomProgress.constant = ORIGINAL_RIGHT_SPACE_PROGRESSBAR + SHIFT_LEFT;
-                self.TrailingSpaceOffline.constant = ORIGINAL_RIGHT_SPACE_OFFLINE + MOVE_OFFLINE_X;
-                self.lbl_NavTitle.textAlignment = NSTextAlignmentLeft;
             }
-            else {
-                self.TrailingSpaceOffline.constant = ORIGINAL_RIGHT_SPACE_OFFLINE;
-            }
-
+            
             //Analytics Screen record
             [[OEXAnalytics sharedAnalytics] trackScreenWithName: @"My Videos - Recent Videos"];
 

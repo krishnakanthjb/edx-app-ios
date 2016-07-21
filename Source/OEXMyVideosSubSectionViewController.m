@@ -790,7 +790,6 @@ typedef NS_ENUM (NSUInteger, OEXAlertType) {
 #pragma mark - USED WHILE EDITING
 
 - (void)cancelTableClicked:(id)sender {
-    [self.customNavigation adjustPositionOfComponentsWithEditingMode:NO isOnline:[_dataInterface reachable]];
     // set isSelected to NO for all the objects
     for(NSArray* arr in self.arr_SubsectionData) {
         for(OEXHelperVideoDownload* videos in arr) {
@@ -834,7 +833,6 @@ typedef NS_ENUM (NSUInteger, OEXAlertType) {
 }
 
 - (void)editTableClicked:(id)sender {
-    [self.customNavigation adjustPositionOfComponentsWithEditingMode:YES isOnline:[_dataInterface reachable]];
     self.arr_SelectedObjects = [[NSMutableArray alloc] init];
 
     // SHIFT THE PROGRESS TO LEFT
