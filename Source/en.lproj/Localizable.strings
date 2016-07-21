@@ -324,8 +324,6 @@
 "LOGIN_SPLASH_SIGN_IN"="Already have an account? Sign in";
 /* Button title to log out the current user */
 "LOGOUT"="Logout";
-/*Logout warning prompt message*/
-"LOGOUT_WARNING_MESSAGE" = "On logging out all downloaded videos will be deleted.";
 /* Option to sort discussion post list by most activity */
 "MOST_ACTIVITY"="Most Activity";
 /* Option to sort discussion post list by most votes */

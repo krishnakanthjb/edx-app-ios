@@ -42,7 +42,18 @@
 }
 
 + (NSString*)pathForUserName:(NSString*)userName {
-    return [[OEXFileUtility savedFilesRootPath] stringByAppendingPathComponent:userName];
+    NSString *userNewPath = [[OEXFileUtility savedFilesRootPath] stringByAppendingPathComponent:userName.oex_md5];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:userNewPath]) {
+        NSString *oldPath = [[OEXFileUtility savedFilesRootPath] stringByAppendingPathComponent:userName];
+        if([[NSFileManager defaultManager] fileExistsAtPath:oldPath]) {
+            NSError* error = nil;
+            if(![[NSFileManager defaultManager] moveItemAtPath:oldPath toPath:userNewPath error:&error]) {
+                NSAssert(error == nil, @"Error migrating file");
+            }
+        }
+    }
+    
+    return userNewPath;
 }
 
 + (NSString*)pathForUserNameCreatingIfNecessary:(NSString*)userName {
@@ -168,6 +179,40 @@
     NSError* error = nil;
     [[NSFileManager defaultManager] removeItemAtPath:[self savedFilesRootPath] error:&error];
     NSAssert(error == nil || error.code == NSFileNoSuchFileError, @"Error nuking all user data");
+}
+
++ (void) nukeUserPIIData {
+    [OEXFileUtility deleteUserFilesExceptVideos:[self savedFilesRootPath]];
+}
+
++ (void) deleteUserFilesExceptVideos:(NSString *) directory {
+    BOOL isDirectory = NO;
+    NSError* error = nil;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *filesList= [fileManager contentsOfDirectoryAtPath:directory error:nil];
+    for (NSString *file in filesList) {
+        NSString *completePath = [NSString stringWithFormat:@"%@/%@",directory,file];
+        BOOL isFileExist = [fileManager fileExistsAtPath:completePath isDirectory:&isDirectory];
+        if (isFileExist && isDirectory) {
+            [OEXFileUtility deleteUserFilesExceptVideos:completePath];
+        }
+        else {
+            if ([OEXFileUtility canDeleteFile:file]) {
+                [[NSFileManager defaultManager] removeItemAtPath:completePath error:&error];
+            }
+        }
+    }
+    
+     NSAssert(error == nil || error.code == NSFileNoSuchFileError, @"Error nuking all user data");
+}
+
++ (BOOL) canDeleteFile:(NSString *) file {
+    NSString *fileExtension = [[file pathExtension] lowercaseString];
+    if ([fileExtension isEqualToString:@"mp4"] || ([fileExtension rangeOfString:@"sqlite"].location != NSNotFound)) {
+        return NO;
+    }
+    
+    return YES;
 }
 
 @end

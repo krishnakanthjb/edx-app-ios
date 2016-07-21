@@ -28,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (nullable NSURL*)fileURLForRequestKey:(nullable NSString*)key username:(nullable NSString*)username;
 
 + (void)nukeUserData;
++ (void) nukeUserPIIData;
 
 @end
 
