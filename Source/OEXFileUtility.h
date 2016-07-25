@@ -38,8 +38,6 @@ NS_ASSUME_NONNULL_BEGIN
 // Unlike the non test version, this does not create the directory
 + (NSString*)t_pathForUserName:(NSString*)userName;
 
-+ (NSString*)t_legacyPathForURL:(NSString*)url userName:(NSString*)userName;
-
 @end
 
 NS_ASSUME_NONNULL_END
