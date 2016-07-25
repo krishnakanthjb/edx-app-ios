@@ -154,7 +154,7 @@
 }
 
 + (void) nukeUserPIIData {
-    [OEXFileUtility deleteUserFilesExceptVideos:[self savedFilesRootPath]];
+    [OEXFileUtility deleteUserFilesExceptVideos:[self pathForUserName:[[OEXSession sharedSession] currentUser].username]];
 }
 
 + (void) deleteUserFilesExceptVideos:(NSString *) directory {
